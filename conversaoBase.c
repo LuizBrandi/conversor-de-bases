@@ -2,25 +2,40 @@
 #include <string.h>
 #include <math.h>
 
-void decHexadecimal(char num[]);
-void decBinario(char num[]);
+void decHexadecimal(int num);
+void decBinario(int num);
 int binarioDec(char bin[]);
 int hexadecimalDec(char hex[]);
 int charToInt(char num[]);
 
 int main(void){
-    char numero[10];
-    scanf("%s", numero);
-    decHexadecimal(numero);
-    decBinario(numero);
+    char numero[10], base[10];
+    int auxDec, auxBin, auxHex;
+    scanf("%s %s", numero, base);
+
+    if(strcmp(base, "dec") == 0){
+        auxDec = charToInt(numero);
+        decBinario(auxDec);
+        printf(" bin\n");
+        decHexadecimal(auxDec);
+        printf(" hex\n");
+    } else if(strcmp(base, "bin") == 0){
+        auxBin = binarioDec(numero);
+        printf("%d bin\n", auxBin);
+        decHexadecimal(auxBin);
+        printf(" hex\n");
+    } else if(strcmp(base, "hex") == 0){
+        auxHex = hexadecimalDec(numero);
+        printf("%d dec\n", auxHex);
+        decBinario(auxHex);
+        printf(" bin\n");
+    }
 }
 
 //Funcao que converte um char na base decimal para um char na base hexadecimal
-void decHexadecimal(char num[]){
+void decHexadecimal(int num){
     char hex[10];
-    int divisao = 100, resto, i = 0, j, numero;
-
-    numero = charToInt(num);
+    int divisao = 100, resto, i = 0, j, numero = num;
 
     while(numero > 0){
         divisao = numero/16;
@@ -49,26 +64,22 @@ void decHexadecimal(char num[]){
     for(j = tamanho - 1; j >= 0; j--){
         printf("%c", hex[j]);
     }
-
-    printf(" hex\n");
 }
 
 //Funcao que converte um char na base decimal para um char na base hexadecimal
-void decBinario(char num[]){
+void decBinario(int num){
     int i = 0, j, quociente = 100, resto;
     char bin[10];
 
-    int numero = charToInt(num);
-
     while(quociente > 0){
-        quociente = numero/2;
-        resto = numero%2;
+        quociente = num/2;
+        resto = num%2;
         if(resto == 1){
             bin[i] = '1';
         } else if(resto == 0){
             bin[i] =  '0';
         }
-        numero = quociente;
+        num = quociente;
         i++;
     }
     bin[i] = '\0';
@@ -77,7 +88,6 @@ void decBinario(char num[]){
     for(j = tamanho - 1; j >= 0; j--){
         printf("%c", bin[j]);
     }
-    printf(" bin\n");
 }
 
 //Funcao que converte um char na base binaria em um inteiro na base decimal
@@ -99,23 +109,23 @@ int hexadecimalDec(char hex[]){
     int numero = 0, decimal = 0;
     int tamanho = strlen(hex);
     for(i = tamanho - 1; i >= 0; i--){
-        if(hex[i] == 'a'){
+        if(hex[i] == 'A'){
             numero = 10;
             decimal += numero * pow(16, j);
             j++;
-        } else if(hex[i] == 'b'){
+        } else if(hex[i] == 'B'){
             numero = 11;
             decimal += numero * pow(16, j);
-        } else if(hex[i] == 'c'){
+        } else if(hex[i] == 'C'){
             numero = 12;
             decimal += numero * pow(16, j);
-        } else if(hex[i] == 'd'){
+        } else if(hex[i] == 'D'){
             numero = 13;
             decimal += numero * pow(16, j);
-        } else if(hex[i] == 'e'){
+        } else if(hex[i] == 'E'){
             numero = 14;
             decimal += numero * pow(16, j);
-        } else if(hex[i] == 'f'){
+        } else if(hex[i] == 'F'){
             numero = 15;
             decimal += numero * pow(16, j);
         } else {
@@ -124,6 +134,7 @@ int hexadecimalDec(char hex[]){
         }
         j++;
     }
+
     return decimal;
 }
 
